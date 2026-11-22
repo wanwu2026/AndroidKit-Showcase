@@ -4,7 +4,7 @@
 
 [中文](README.md) | [English](README_EN.md)
 
-A demo app that integrates all three client SDKs of the ecosystem in one project, showing four capabilities on one screen:
+A demo app that integrates three client SDKs in one project, showing four capabilities on one screen:
 
 | Capability | Backend | SDK |
 |---|---|---|
@@ -13,7 +13,7 @@ A demo app that integrates all three client SDKs of the ecosystem in one project
 | Announcements | OpenHub `announce` plugin | [UpdateKit](https://github.com/wanwu2026/UpdateKit) |
 | Crash reporting | OpenHub `crash` plugin | [CrashKit](https://github.com/wanwu2026/CrashKit) |
 
-All three SDKs talk to the same [OpenHub](https://github.com/wanwu2026/OpenHub) server (kernel + four plugins).
+All three SDKs talk to the [OpenHub](https://github.com/wanwu2026/OpenHub) server.
 
 ## Dependencies (JitPack)
 

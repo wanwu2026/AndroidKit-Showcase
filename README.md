@@ -4,7 +4,7 @@
 
 [中文](README.md) | [English](README_EN.md)
 
-一个演示 App，把生态里三套客户端 SDK 集成到同一个工程，一屏看到四种能力：
+一个演示 App，把三套客户端 SDK 集成到同一个工程，一屏看到四种能力：
 
 | 能力 | 来自 | SDK |
 |---|---|---|
@@ -13,7 +13,7 @@
 | 公告拉取 | OpenHub `announce` 插件 | [UpdateKit](https://github.com/wanwu2026/UpdateKit) |
 | 崩溃上报 | OpenHub `crash` 插件 | [CrashKit](https://github.com/wanwu2026/CrashKit) |
 
-三套 SDK 背后是同一个 [OpenHub](https://github.com/wanwu2026/OpenHub) 服务器（内核 + 四插件）。
+三套 SDK 对接 [OpenHub](https://github.com/wanwu2026/OpenHub) 服务器。
 
 ## 依赖（JitPack）
 
