@@ -1,0 +1,64 @@
+name: Verify Integration
+
+# showcase 依赖 JitPack 坐标（首次发布需人工触发）。本 CI 用更可靠的方式验证：
+# checkout 三套 SDK 源码，与本 App 一起用 javac 编译，确认所有 API 调用正确。
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout showcase
+        uses: actions/checkout@v4
+        with:
+          path: showcase
+
+      - name: Checkout CardKeySDK (normal-android-app)
+        uses: actions/checkout@v4
+        with:
+          repository: wanwu2026/CardKeySDK
+          ref: normal-android-app
+          path: sdk-sources/CardKeySDK
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout UpdateKit
+        uses: actions/checkout@v4
+        with:
+          repository: wanwu2026/UpdateKit
+          ref: main
+          path: sdk-sources/UpdateKit
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout CrashKit
+        uses: actions/checkout@v4
+        with:
+          repository: wanwu2026/CrashKit
+          ref: main
+          path: sdk-sources/CrashKit
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: 集成编译验证
+        working-directory: showcase
+        env:
+          SDK_ROOT: ${{ github.workspace }}/sdk-sources
+        run: |
+          # 找 android.jar（runner 自带 Android SDK）
+          AJ=$(find "$ANDROID_HOME/platforms" -name android.jar 2>/dev/null | sort -V | tail -1)
+          if [ -z "$AJ" ]; then
+            echo "未找到 android.jar，安装 platform 34" >&2
+            SDKMGR=$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f 2>/dev/null | head -1)
+            yes | "$SDKMGR" --licenses >/dev/null 2>&1 || true
+            "$SDKMGR" --install "platforms;android-34" >/dev/null
+            AJ="$ANDROID_HOME/platforms/android-34/android.jar"
+          fi
+          export ANDROID_JAR="$AJ"
+          chmod +x tools/verify_integration.sh
+          ./tools/verify_integration.sh
